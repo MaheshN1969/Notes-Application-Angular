@@ -1,0 +1,53 @@
+<h2>Add Note</h2>
+
+<br>
+
+<div class="form-div">
+
+    <form action="#" class="form-container">
+
+        <div class="form-item">
+            <label>Subject</label><br>
+            <select name="subject" id="subject" (change)="changeStatus($event)">
+                <option value="Null">----</option>
+                <option *ngFor="let data of subject_rules" value={{data.subject_description}}> {{data.subject_description}} </option>
+            </select>
+
+                <!-- <option value="General">General</option> -->
+                <!-- <option value="Re-appropriation">Re-appropriation</option> -->
+                <!-- <option value="A">A</option> -->
+                <!-- <option value="B">B</option> --> 
+
+
+        </div>
+
+        <div class="form-item">
+            <label>Budget Code</label><br>
+            <select name="budget-code" id="budget-code" [disabled]="budget_code_status">
+                <option value="Null">----</option>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+            </select>
+        </div>
+
+        <div class="form-item">
+            <label>Amount</label><br>
+            <input id="amount" type="number" [disabled]="amount_status" [value]="amountValue" required min=0>
+        </div>
+
+        <div class="form-item">
+            <label>Description</label><br>
+            <textarea type="textarea" required maxlength="200"></textarea>
+        </div>
+
+        <div class="form-item">
+
+            <button type="submit" class="btn btn-primary">Add</button>
+
+        </div>
+    
+    </form>
+
+</div>

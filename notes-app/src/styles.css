@@ -1,0 +1,18 @@
+/* You can add global styles to this file, and also import other style files */
+
+.action
+{
+    display : flex ;
+    flex-direction : row ;
+    /* margin : 10px;
+    padding : 10px; */
+   justify-content: space-evenly;
+}
+
+
+table 
+{
+    width : 70%;
+    margin: 20px 20px 20px 20px;
+    text-align: center;
+}
