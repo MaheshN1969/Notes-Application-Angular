@@ -10,22 +10,28 @@
                 <th scope="col">Budget Code</th>
                 <th scope="col">Amount</th>
                 <th scope="col">Description</th>
+                <th scope="col">Entry Date</th>
                 <th scope="col">Action</th>
             </tr>
         </thead>
         <tbody>
             <tr *ngFor = "let note of notes">
-                <td scope="row"> {{note.subject_description}} </td>
-                <td> {{note.budget_code_id}} </td>
-                <td> {{note.amount}} </td>
-                <td> {{note.description}} </td>
+                <td  name="note.subject_description" scope="row"> {{note.subject_description}} </td>
+                <td > {{note.budget_code_id}} </td>
+                <td > {{note.amount}} </td>
+                <td > {{note.description}} </td>
+                <td > {{note.insert_date}} </td>
                 <td>
+                    <!-- [(ngModel)]="note.budget_code_id" -->
+                    <!-- [(ngModel)]="note.amount" -->
+                    <!-- [(ngModel)]="note.description" -->
+                    <!-- [(ngModel)]="note.budget_code_id" -->
 
                     <div class="action">
 
-                        <button class="btn btn-primary">Update</button>
-                        <button class="btn btn-danger">Delete</button>
-                        <button class="btn btn-success">Close</button>
+                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" (click)="updateNote(note.id)">Update</button>
+                        <button class="btn btn-danger" (click)="deleteNote(note.id)">Delete</button>
+                        <button class="btn btn-success" (click)="closeNote(note.id , note)" >Close</button>
 
                     </div>
 
@@ -35,3 +41,65 @@
         </tbody>
     </table>
 </div>
+
+
+<!-- Button trigger modal
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+    Launch demo modal
+  </button> -->
+  
+  <!-- Modal -->
+  <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Update Note</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        
+        <!-- <form (ngSubmit)="submitUpdatedForm()"> -->
+          <form>
+          <div class="modal-body">
+            <!-- (change)="changeStatus($event)" -->
+            
+            <label><b>Subject</b></label><br>
+            <select name="subject" id="subject" (change)="changeStatus($event)" [(ngModel)]="modal_note.subject_description" [value]="modal_note.subject_description" >
+                <option value="Null">----</option>
+                <option *ngFor="let data of subject_rules" > {{data.subject_description}} </option>
+            </select>
+
+            <div class="form-item">
+              <label><b>Budget Code</b></label><br>
+              <select name="budget-code" id="budget-code" [(ngModel)]="modal_note.budget_code_id"  [value]="modal_note.budget_code_id" [disabled]="budget_code_status" >
+                  <option value="Null">----</option>
+                  <option value="1">1</option>
+                  <option value="2">2</option>
+                  <option value="3">3</option>
+                  <option value="4">4</option>
+              </select>
+            </div>
+            
+            <div class="form-item">
+              <label><b>Amount</b></label><br>
+              <input id="modal_amount" name="modal_amount" class="mod  al_amount" type="number" [disabled]="amount_status" required min=0 [(ngModel)]="modal_note.amount" [value]="modal_note.amount">
+            </div>
+          
+            <div class="form-item">
+              <label><b>Description</b></label><br>
+              <textarea name="description" type="textarea" required maxlength="200" [(ngModel)]="modal_note.description"  [value]="modal_note.description"></textarea>
+            </div>
+
+          </div>
+        
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="reloadPage()">Close</button>
+            <button type="button" type="submit" class="btn btn-primary" (click)="submitUpdatedForm()">Update</button>
+          </div>
+
+        </form>
+      
+      </div>
+    </div>
+  </div>

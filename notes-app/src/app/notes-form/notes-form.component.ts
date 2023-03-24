@@ -1,6 +1,8 @@
 import { Component,OnInit } from '@angular/core';
 import { NotesService } from '../notes.service';
 import { SubjectRules } from '../subject-rules';
+import { Note } from '../note';
+import { NotesTableComponent } from '../notes-table/notes-table.component';
 
 @Component({
   selector: 'app-notes-form',
@@ -9,7 +11,7 @@ import { SubjectRules } from '../subject-rules';
 })
 export class NotesFormComponent implements OnInit {
 
-
+  note : Note = new Note();
   subject_rules : SubjectRules[] ;
 
   budget_code_status : boolean = true ;
@@ -18,7 +20,10 @@ export class NotesFormComponent implements OnInit {
   amountValue : Number = 0;
 
 
-  constructor(private notesService : NotesService){}
+  constructor(private notesService : NotesService  ){}
+
+  notesTableComponent = new NotesTableComponent(this.notesService);
+
 
   ngOnInit(): void {
 
@@ -68,6 +73,24 @@ export class NotesFormComponent implements OnInit {
         } 
 
         
+  }
+
+  onSubmit()
+  {
+      console.log("Note to Add : ",this.note);
+      this.saveNote();
+  }
+
+  private saveNote()
+  {
+      return this.notesService.addNote(this.note).subscribe(data => {
+
+            console.log("Note Inserted Successfuly............... : ",data);
+            // this.notesTableComponent.fetchNotesFromService();
+            location.reload();
+
+      },
+      error => console.log(error))
   }
 
 }

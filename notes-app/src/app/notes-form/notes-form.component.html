@@ -4,11 +4,11 @@
 
 <div class="form-div">
 
-    <form action="#" class="form-container">
+    <form (ngSubmit)="onSubmit()" class="form-container">
 
         <div class="form-item">
             <label>Subject</label><br>
-            <select name="subject" id="subject" (change)="changeStatus($event)">
+            <select name="subject" id="subject" (change)="changeStatus($event)" [(ngModel)]="note.subject_description">
                 <option value="Null">----</option>
                 <option *ngFor="let data of subject_rules" value={{data.subject_description}}> {{data.subject_description}} </option>
             </select>
@@ -23,7 +23,7 @@
 
         <div class="form-item">
             <label>Budget Code</label><br>
-            <select name="budget-code" id="budget-code" [disabled]="budget_code_status">
+            <select name="budget-code" id="budget-code" [disabled]="budget_code_status" [(ngModel)] = "note.budget_code_id">
                 <option value="Null">----</option>
                 <option value="1">1</option>
                 <option value="2">2</option>
@@ -34,17 +34,17 @@
 
         <div class="form-item">
             <label>Amount</label><br>
-            <input id="amount" type="number" [disabled]="amount_status" [value]="amountValue" required min=0>
+            <input id="amount" name="amount" type="number" [disabled]="amount_status" [value]="amountValue" required min=0 [(ngModel)]="note.amount">
         </div>
 
         <div class="form-item">
             <label>Description</label><br>
-            <textarea type="textarea" required maxlength="200"></textarea>
+            <textarea name="description" type="textarea" required maxlength="200" [(ngModel)]="note.description"></textarea>
         </div>
 
         <div class="form-item">
 
-            <button type="submit" class="btn btn-primary">Add</button>
+            <button type="submit" class="btn btn-primary" >Add</button>
 
         </div>
     

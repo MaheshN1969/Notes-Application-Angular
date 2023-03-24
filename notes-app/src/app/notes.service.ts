@@ -29,4 +29,24 @@ export class NotesService {
       return this.httpClient.get<SubjectRules[]>(`${this.baseUrl}/rules`)
   }
 
+  addNote(note : Note) : Observable<Object>
+  {
+      return this.httpClient.post(`${this.baseUrl}`,note);
+  }
+
+  deleteNote(id : Number) : Observable<Object> 
+  {
+      return this.httpClient.delete(`${this.baseUrl}/${id}`);
+  }
+
+  closeNote(id : Number , note : Note) : Observable<Object>
+  {
+      return this.httpClient.put(`${this.baseUrl}/close-note/${id}`,note);
+  }
+
+  updateNote(id : Number , note : Note) : Observable<Object> 
+  {
+        return this.httpClient.put(`${this.baseUrl}/update-note/${id}`,note);
+  }
+
 }

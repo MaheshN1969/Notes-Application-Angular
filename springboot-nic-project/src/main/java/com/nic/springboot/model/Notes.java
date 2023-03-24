@@ -37,10 +37,10 @@ public class Notes {
 	private char status ;
 	
 	@Column(name = "insert_date")
-	private Timestamp insert_date;
+	private String insert_date;
 	
 	@Column(name = "update_date")
-	private Timestamp update_date ;
+	private String update_date ;
 	
 	
 	public Notes() {
@@ -48,7 +48,7 @@ public class Notes {
 	}
 	
 	
-	public Notes(Integer budget_code_id, String subject_description,String description, Double amount, String remarks, char status, Timestamp insert_date, Timestamp update_date) 
+	public Notes(Integer budget_code_id, String subject_description,String description, Double amount, String remarks, char status, String insert_date, String update_date) 
 	{
 		super();
 		this.budget_code_id = budget_code_id;
@@ -62,6 +62,14 @@ public class Notes {
 	}
 
 
+
+
+	@Override
+	public String toString() {
+		return "Notes [id=" + id + ", budget_code_id=" + budget_code_id + ", description=" + description
+				+ ", subject_description=" + subject_description + ", amount=" + amount + ", remarks=" + remarks
+				+ ", status=" + status + ", insert_date=" + insert_date + ", update_date=" + update_date + "]";
+	}
 
 
 	public String getSubject_description() {
@@ -110,16 +118,16 @@ public class Notes {
 	public void setStatus(char status) {
 		this.status = status;
 	}
-	public Timestamp getInsert_date() {
+	public String getInsert_date() {
 		return insert_date;
 	}
-	public void setInsert_date(Timestamp insert_date) {
+	public void setInsert_date(String insert_date) {
 		this.insert_date = insert_date;
 	}
-	public Timestamp getUpdate_date() {
+	public String getUpdate_date() {
 		return update_date;
 	}
-	public void setUpdate_date(Timestamp update_date) {
+	public void setUpdate_date(String update_date) {
 		this.update_date = update_date;
 	}
 	

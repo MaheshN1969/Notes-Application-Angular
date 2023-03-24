@@ -19,7 +19,7 @@ import { NotesFormComponent } from './notes-form/notes-form.component';
     FormsModule,
     HttpClientModule
   ],
-  providers: [],
+  providers: [NotesTableComponent],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
