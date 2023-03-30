@@ -11,13 +11,16 @@ import { SubjectRules } from '../subject-rules';
 })
 export class NotesTableComponent implements OnInit  {
 
-  notes : Note[];
-  subject_rules : SubjectRules[];
+  notes : Note[] ;
+  subject_rules : SubjectRules[] ;
 
   modal_note : Note = new Note() ;
   amount_status : boolean;
   budget_code_status : boolean ;
   selected  : String ;
+
+  dtOptions: DataTables.Settings = {};
+  
   
 
   constructor(private notesService : NotesService ){}
@@ -26,6 +29,8 @@ export class NotesTableComponent implements OnInit  {
     
       this.fetchNotesFromService();
       this.fetchSubjectRules();
+
+      
 
   }
 
@@ -37,18 +42,99 @@ export class NotesTableComponent implements OnInit  {
       })
   }
 
+  public dataTableOps()
+  {
+    setTimeout(()=>{
+      $('#notes-table').DataTable({
+       
+        pagingType: 'full_numbers',
+        pageLength: 5,
+        lengthMenu: [5,10,15,25,50],
+        processing: true,
+        autoWidth : false,
+        destroy : true,
+        stateSave : true,
+      
+        
+        // paging: false,
+        // searching: false
+      });
+    },1);
+
+    
+  }
+
   public fetchNotesFromService(){
 
     // console.log("Inside ................");
 
           this.notesService.getNoteList().subscribe(data =>{
-
+              this.notes = [];
               this.notes = data ;
+
+              // this.dtOptions = {
+              //   pagingType: 'full_numbers',
+              //   pageLength: 5,
+              //   lengthMenu: [5,10,15,25,50],
+              //   processing: true
+              // };
+
+              this.dataTableOps();
 
     // console.log("Inside main ................ : ",this.notes);
 
 
           })
+  }
+
+  applyFilter( e : Event)
+  {
+      let selected  = (e.target as HTMLInputElement).value ;
+
+      console.log("Filter Change : ", selected);
+
+      if(selected === "All")
+      {
+          this.fetchNotesFromService();
+      }
+      else if(selected == "Yesterday")
+      {
+          this.notesService.getNotesAddedSinceYesterday().subscribe(data =>{
+            console.log("Notes Since Yesterday : ",data);
+            this.notes = [] ;
+            this.notes = data ;
+
+            
+
+            console.log("Notes Variable : ",this.notes);
+          },
+          error => console.log(error)
+          )
+      }
+      else if(selected == "1 Week")
+      {
+        this.notesService.getNoteAddedSinceOneWeek().subscribe(data =>{
+          console.log("Notes Since last 1 Week : ",data);
+            this.notes = [] ;
+            this.notes = data ;
+            console.log("Notes Variable : ",this.notes);
+          },
+          error => console.log(error)
+          )
+      }
+      else if(selected == "1 Month")
+      {
+          this.notesService.getNotesAddedSinceOneMonth().subscribe(data =>{
+            console.log("Notes Since last 1 Month : ",data);
+            this.notes = [] ;
+            this.notes = data ;
+            console.log("Notes Variable : ",this.notes);
+          },
+          error => console.log(error)
+          )
+      }
+
+      this.dataTableOps();
   }
 
   changeStatus(e : Event)
@@ -62,8 +148,8 @@ export class NotesTableComponent implements OnInit  {
 
       console.log("Corresponding Rule : ",searchObject);
 
-      this.budget_code_status = (searchObject?.capture_budget_code == 1) ? false : true ;
-      this.amount_status = (searchObject?.capture_amount == 1) ? false : true ;        
+      this.budget_code_status = (searchObject?.capture_budget_code == "Y") ? false : true ;
+      this.amount_status = (searchObject?.capture_amount == "Y") ? false : true ;        
 
       console.log("Budget Code Status : ",this.budget_code_status);
       console.log("Amount Status : ",this.amount_status);
@@ -71,8 +157,15 @@ export class NotesTableComponent implements OnInit  {
       if (this.amount_status == true)
       {
           (document.getElementById("modal_amount") as HTMLInputElement).value = "0" ;
+          this.modal_note.amount = 0;
             
-      } 
+      }
+      
+      if(this.budget_code_status == true)
+      {
+        (document.getElementById("modal_budget-code") as HTMLInputElement).value = "Null" ;
+        this.modal_note.budget_code_id = -1 ;
+      }
 
 
   }
@@ -89,6 +182,13 @@ export class NotesTableComponent implements OnInit  {
       );
   }
 
+  getFormatedDate(date : Date)
+  {
+          const dt = date.getFullYear()+"-"+(date.getMonth()+1)+"-"+date.getDate()+" "+date.getHours()+":"+date.getMinutes()+":"+date.getSeconds();
+
+          return dt ;
+  }
+
   closeNote(id : Number , note : Note)
   {
       let remarks = String(prompt("Enter Remarks "));
@@ -97,7 +197,7 @@ export class NotesTableComponent implements OnInit  {
       {
             note.remarks = remarks ;
             note.status = 'C';
-            note.update_date = String(new Date().toLocaleString());
+            note.update_date = this.getFormatedDate(new Date());
 
             this.notesService.closeNote(id,note).subscribe(data =>{
 
@@ -121,7 +221,7 @@ export class NotesTableComponent implements OnInit  {
     const temp = this.notes.find((data) => data.id === id);
 
     this.modal_note = temp!;
-    this.modal_note.update_date = String(new Date().toLocaleString());
+    this.modal_note.update_date = this.getFormatedDate(new Date());
 
     console.log("Selected Note : ",this.modal_note); 
 
@@ -129,8 +229,8 @@ export class NotesTableComponent implements OnInit  {
 
       console.log("Search Object : ",searchObject);
 
-      this.amount_status = searchObject?.capture_amount === 1 ? false : true ;
-      this.budget_code_status = searchObject?.capture_budget_code === 1 ? false : true ;
+      this.amount_status = searchObject?.capture_amount === "Y" ? false : true ;
+      this.budget_code_status = searchObject?.capture_budget_code === "Y" ? false : true ;
 
 
       // this.notesService.updateNote(id,this.modal_note).subscribe(data => {

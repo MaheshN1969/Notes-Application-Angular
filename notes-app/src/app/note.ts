@@ -1,15 +1,6 @@
 export class Note {
 
-    constructor()
-    {
-        this.budget_code_id = 0;
-        this.amount = 0;
-        this.insert_date = String(new Date().toLocaleString());
-        this.update_date = String(new Date().toLocaleString());
-        this.remarks = "";
-        this.status = "O";
-        this.description = "";
-    }
+    
 
     id : Number;
     subject_description : string;
@@ -20,6 +11,24 @@ export class Note {
     status : string ;
     insert_date : String ;
     update_date : String ;
+
+    constructor()
+    {
+        this.budget_code_id = 0;
+        this.amount = 0;
+        this.insert_date = this.getFormatedDate( new Date());
+        this.update_date = this.getFormatedDate(new Date());
+        this.remarks = "";
+        this.status = "O";
+        this.description = "";
+    }
+
+    getFormatedDate(date : Date)
+    {
+            const dt = date.getFullYear()+"-"+(date.getMonth()+1)+"-"+date.getDate()+" "+date.getHours()+":"+date.getMinutes()+":"+date.getSeconds();
+
+            return dt ;
+    }
 
 
 }

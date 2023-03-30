@@ -19,6 +19,22 @@ export class NotesService {
       return this.httpClient.get<Note[]>(`${this.baseUrl}`);
   }
 
+  getNotesAddedSinceYesterday() : Observable<Note[]>
+  {
+        return this.httpClient.get<Note[]>(`${this.baseUrl}/yesterday`);
+  }
+
+  getNoteAddedSinceOneWeek() : Observable<Note[]> 
+  {
+        // console.log("Notes Since last 1 Week : ",this.httpClient.get<Note[]>(`${this.baseUrl}/week`));
+        return this.httpClient.get<Note[]>(`${this.baseUrl}/week`);
+  }
+
+  getNotesAddedSinceOneMonth() : Observable<Note[]>
+  {
+        return this.httpClient.get<Note[]>(`${this.baseUrl}/month`);
+  }
+
   // initialFetch() : Observable<Object>
   // {
   //       return this.httpClient.get<Object>(`${this.baseUrl}`);

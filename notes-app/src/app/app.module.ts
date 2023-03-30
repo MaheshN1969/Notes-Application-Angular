@@ -6,6 +6,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { NotesTableComponent } from './notes-table/notes-table.component';
 import { NotesFormComponent } from './notes-form/notes-form.component';
+import { DataTablesModule } from 'angular-datatables';
 
 @NgModule({
   declarations: [
@@ -17,7 +18,8 @@ import { NotesFormComponent } from './notes-form/notes-form.component';
     BrowserModule,
     AppRoutingModule,
     FormsModule,
-    HttpClientModule
+    HttpClientModule,
+    DataTablesModule
   ],
   providers: [NotesTableComponent],
   bootstrap: [AppComponent]

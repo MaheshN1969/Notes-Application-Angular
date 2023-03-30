@@ -60,8 +60,8 @@ export class NotesFormComponent implements OnInit {
 
         
 
-        this.budget_code_status = (searchObject?.capture_budget_code == 1) ? false : true ;
-        this.amount_status = (searchObject?.capture_amount == 1) ? false : true ;        
+        this.budget_code_status = (searchObject?.capture_budget_code == "Y") ? false : true ;
+        this.amount_status = (searchObject?.capture_amount == "Y") ? false : true ;        
 
         console.log("Budget Code Status : ",this.budget_code_status);
         console.log("Amount Status : ",this.amount_status);
@@ -69,8 +69,15 @@ export class NotesFormComponent implements OnInit {
         if (this.amount_status === true)
         {
           (document.getElementById("amount") as HTMLInputElement).value = "0" ;
+          this.note.amount = 0;
             
         } 
+        if(this.budget_code_status == true)
+        {
+            (document.getElementById("budget-code") as HTMLInputElement).value = "Null" ;
+            this.note.budget_code_id = -1 ;
+        }
+
 
         
   }
