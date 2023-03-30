@@ -1,7 +1,9 @@
-import { Component , OnInit} from '@angular/core';
+import { Component , OnInit,OnDestroy, AfterViewInit, ViewChild} from '@angular/core';
 import { NotesService } from '../notes.service';
 import { Note } from '../note';
 import { SubjectRules } from '../subject-rules';
+import { DataTableDirective } from 'angular-datatables';
+import { Subject } from 'rxjs';
 
 
 @Component({
@@ -9,7 +11,7 @@ import { SubjectRules } from '../subject-rules';
   templateUrl: './notes-table.component.html',
   styleUrls: ['./notes-table.component.css']
 })
-export class NotesTableComponent implements OnInit  {
+export class NotesTableComponent implements OnInit,OnDestroy,AfterViewInit {
 
   notes : Note[] ;
   subject_rules : SubjectRules[] ;
@@ -20,12 +22,26 @@ export class NotesTableComponent implements OnInit  {
   selected  : String ;
 
   dtOptions: DataTables.Settings = {};
+  dtTrigger : Subject<any> = new Subject();
   
+  @ViewChild(DataTableDirective)
+  dtElement: DataTableDirective;
   
 
   constructor(private notesService : NotesService ){}
 
   ngOnInit(): void {
+
+    this.dtOptions = {
+      
+        pagingType: 'full_numbers',
+        pageLength: 5,
+        lengthMenu: [5,10,15,25,50],
+        processing: true,
+        autoWidth : false,
+        destroy : true,
+        stateSave : true,
+    }
     
       this.fetchNotesFromService();
       this.fetchSubjectRules();
@@ -33,6 +49,26 @@ export class NotesTableComponent implements OnInit  {
       
 
   }
+
+  rerender(): void {
+    
+    this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
+    // Destroy the table first
+          dtInstance.destroy();
+    // Call the dtTrigger to rerender again
+          this.dtTrigger.next(false);
+      });
+  }
+
+  ngAfterViewInit(): void {
+    this.dtTrigger.next(false);
+     }
+    
+    ngOnDestroy(): void {
+        this.dtTrigger.unsubscribe();
+    }
+    
+    
 
   public fetchSubjectRules()
   {
@@ -79,7 +115,7 @@ export class NotesTableComponent implements OnInit  {
               //   processing: true
               // };
 
-              this.dataTableOps();
+              this.rerender();
 
     // console.log("Inside main ................ : ",this.notes);
 
@@ -134,7 +170,7 @@ export class NotesTableComponent implements OnInit  {
           )
       }
 
-      this.dataTableOps();
+      this.rerender();
   }
 
   changeStatus(e : Event)
