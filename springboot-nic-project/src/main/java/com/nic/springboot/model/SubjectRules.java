@@ -22,17 +22,17 @@ public class SubjectRules {
 	private String subject_description;
 	
 	@Column(name = "capture_amount")
-	private int capture_amount;
+	private String capture_amount;
 	
 	@Column(name = "capture_budget_code")
-	private int capture_budget_code;
+	private String capture_budget_code;
 	
 	private SubjectRules()
 	{
 		
 	}
 
-	public SubjectRules(String subject_description, int capture_amount, int capture_budget_code) {
+	public SubjectRules(String subject_description, String capture_amount, String capture_budget_code) {
 		super();
 		this.subject_description = subject_description;
 		this.capture_amount = capture_amount;
@@ -55,19 +55,19 @@ public class SubjectRules {
 		this.subject_description = subject_description;
 	}
 
-	public int getCapture_amount() {
+	public String getCapture_amount() {
 		return capture_amount;
 	}
 
-	public void setCapture_amount(int capture_amount) {
+	public void setCapture_amount(String capture_amount) {
 		this.capture_amount = capture_amount;
 	}
 
-	public int getCapture_budget_code() {
+	public String getCapture_budget_code() {
 		return capture_budget_code;
 	}
 
-	public void setCapture_budget_code(int capture_budget_code) {
+	public void setCapture_budget_code(String capture_budget_code) {
 		this.capture_budget_code = capture_budget_code;
 	}
 	

@@ -47,6 +47,31 @@ public class NotesController {
 		return this.subjectRulesRepository.findAll();
 	}
 	
+
+	@GetMapping("/notes/{limit}")
+	public List<Notes> getFirstNNotes(@PathVariable("limit") int limit)
+	{
+		return this.notesRepository.findFirstNOpenNotes(limit);
+	}
+	
+	@GetMapping("/notes/yesterday")
+	public List<Notes> getNotesSinceYesterday()
+	{
+		return this.notesRepository.findLastOneDayNotes();
+	}
+	
+	@GetMapping("/notes/week")
+	public List<Notes> getNotesSinceOneWeek()
+	{
+		return this.notesRepository.findLastOneWeekNotes();
+	}
+	
+	@GetMapping("/notes/month")
+	public List<Notes> getNotesSinceOneMonth()
+	{
+		return this.notesRepository.findLastOneMonthNotes();
+	}
+	
 	
 	@PostMapping("/notes")
 	public Notes createNote(@RequestBody Notes note)
